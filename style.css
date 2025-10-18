@@ -1,0 +1,8 @@
+body{
+  /* to center the board */
+  text-align: center; 
+}
+
+#board{
+  background-color: black;
+}
