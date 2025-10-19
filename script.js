@@ -55,6 +55,8 @@ let score = 0;
 let lives = 3;
 let gameOver = false;
 
+let nextDirection = null;
+
 window.onload = function() {
   board = document.getElementById("board");
   board.height = boardHeight;
@@ -74,7 +76,7 @@ window.onload = function() {
 
   update();
 
-  document.addEventListener("keyup", movePacman);
+  document.addEventListener("keydown", movePacman);
 }
 
 function loadImages() {
@@ -152,8 +154,6 @@ function update() {
   move();
   draw();
   setTimeout(update, 50);
-  // setInterval, setTimeout, requestAnimationFrame
-  // 20 FPS 1-> 1000ms /20 = 50
 } 
 
 function draw() {
@@ -185,6 +185,11 @@ function draw() {
 }
 
 function move() {
+  if (nextDirection && canMove(pacman, nextDirection)) {
+    pacman.updateDirection(nextDirection);
+    nextDirection = null;
+  }
+
   pacman.x += pacman.velocityX;
   pacman.y += pacman.velocityY;
 
@@ -253,32 +258,30 @@ function movePacman(e) {
     return;
   }
 
-  if (e.code == "ArrowUp" || e.code == "KeyW") {
-    pacman.updateDirection('U');
-  }
-  else if (e.code == "ArrowDown" || e.code == "KeyS") {
-    pacman.updateDirection('D');
-  }
-  else if (e.code == "ArrowLeft" || e.code == "KeyA") {
-    pacman.updateDirection('L');
-  }
-  else if (e.code == "ArrowRight" || e.code == "KeyD") {
-    pacman.updateDirection('R');
-  }
+  if (e.code == "ArrowUp" || e.code == "KeyW") nextDirection = 'U';
+  else if (e.code == "ArrowDown" || e.code == "KeyS") nextDirection = 'D';
+  else if (e.code == "ArrowLeft" || e.code == "KeyA") nextDirection = 'L';
+  else if (e.code == "ArrowRight" || e.code == "KeyD") nextDirection = 'R';
 
-  // update pacman images
-  if (pacman.direction == 'U') {
-    pacman.image = pacmanUp;
+  if (pacman.direction == 'U') pacman.image = pacmanUp;
+  else if (pacman.direction == 'D') pacman.image = pacmanDown;
+  else if (pacman.direction == 'L') pacman.image = pacmanLeft;
+  else if (pacman.direction == 'R') pacman.image = pacmanRight;
+}
+
+function canMove(entity, direction) {
+  let test = { x: entity.x, y: entity.y, width: entity.width, height: entity.height };
+  if (direction == 'U') test.y -= tileSize / 4;
+  if (direction == 'D') test.y += tileSize / 4;
+  if (direction == 'L') test.x -= tileSize / 4;
+  if (direction == 'R') test.x += tileSize / 4;
+
+  for (let wall of walls.values()) {
+    if (collision(test, wall)) {
+      return false;
+    }
   }
-  else if (pacman.direction == 'D') {
-    pacman.image = pacmanDown;
-  }
-  else if (pacman.direction == 'L') {
-    pacman.image = pacmanLeft;
-  }
-  else if (pacman.direction == 'R') {
-    pacman.image = pacmanRight;
-  }
+  return true;
 }
 
 function collision(a,b) {
@@ -295,6 +298,8 @@ function resetPositions() {
 
   for (let ghost of ghosts.values()) {
     ghost.reset();
+    ghost.velocityX = 0;
+    ghost.velocityY = 0;
     const newDirection = directions[Math.floor(Math.random()*4)]; // 0-3
     ghost.updateDirection(newDirection);
   }
@@ -320,6 +325,14 @@ class Block{
     const prevDirection = this.direction;
     this.direction = direction;
     this.updateVelocity();
+
+    if (this === pacman) {
+      if (this.direction == 'U') this.image = pacmanUp;
+      else if (this.direction == 'D') this.image = pacmanDown;
+      else if (this.direction == 'L') this.image = pacmanLeft;
+      else if (this.direction == 'R') this.image = pacmanRight;
+    }
+
     this.x += this.velocityX;
     this.y += this.velocityY;
 

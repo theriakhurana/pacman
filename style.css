@@ -1,8 +1,23 @@
 body{
-  /* to center the board */
-  text-align: center; 
+  text-align: center;  /* centers the board content */
+  
+  /* Animated gradient background */
+  background: linear-gradient(135deg, #1e3c72, #2a5298, #0d1b2a, #001f3f);
+  background-size: 300% 300%;
+  animation: gradientMove 8s ease infinite;
+}
+
+/* Smooth animated gradient keyframes */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 #board{
   background-color: black;
+  display: inline-block;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,153,255,0.6), 0 0 40px rgba(0,153,255,0.3);
 }
