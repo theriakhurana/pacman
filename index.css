@@ -1,0 +1,157 @@
+:root {
+    --cyan: #00FFFF; /* Bright Cyan (Main Highlight/Glow) */
+    --accent-blue: #0099FF; /* Accent Blue */
+    --core-blue: #00CCFF; /* Core Blue Glow */
+    --arcade-bg: #000022; /* Very Dark Blue Background */
+    --font-pixel: 'Press Start 2P', cursive;
+    --font-default: 'Arial', sans-serif;
+}
+
+body {
+    background-color: var(--arcade-bg);
+    color: white;
+    font-family: var(--font-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    position: relative; 
+}
+
+.menu-container {
+    width: 75vw;
+    height: 75vh;
+    max-width: none;
+    
+    text-align: center;
+    padding: 40px 20px; 
+
+    border: 5px solid var(--core-blue);
+    box-shadow: 
+        0 0 30px rgba(0, 204, 255, 0.9),
+        0 0 70px rgba(0, 136, 255, 0.6), 
+        inset 0 0 20px rgba(0, 136, 255, 0.4); 
+    
+    border-radius: 12px;
+    background-color: #000000; 
+    overflow-y: auto; 
+    z-index: 1;
+    position: relative;
+}
+
+.game-title {
+    font-family: var(--font-pixel); 
+    font-size: 3em; 
+    color: var(--cyan); 
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--cyan), 0 0 25px #33CCFF; 
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: #CCCCCC;
+    margin-bottom: 30px;
+}
+
+/* --- Simple Grid Layout --- */
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 30px; 
+    padding: 10px;
+}
+
+.level-card {
+    background-color: #111111;
+    border: 2px solid #555555;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 280px;
+}
+
+.level-card:hover {
+    transform: scale(1.05); 
+    /* Intense Cyan Card Glow on Hover */
+    box-shadow: 0 0 20px var(--cyan), 0 0 10px #FFFFFF; 
+}
+
+.level-card h2 {
+    font-size: 1.2em;
+    color: var(--core-blue);
+    margin-bottom: 10px;
+    text-shadow: 0 0 2px var(--core-blue);
+}
+
+.level-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.maze-preview {
+    width: 90%;
+    height: 120px;
+    margin-bottom: 15px;
+    border: 2px solid var(--accent-blue); 
+    border-radius: 4px;
+    background-color: #0A0A0A;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: #00FFFF;
+    font-size: 1.2em;
+    font-family: var(--font-pixel);
+    text-shadow: 0 0 5px #00FFFF, 0 0 15px var(--core-blue);
+}
+
+.level-button {
+    font-family: var(--font-pixel);
+    background-color: var(--accent-blue); 
+    color: white;
+    border: none;
+    padding: 12px 25px; 
+    font-size: 0.8em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.1s, transform 0.1s, box-shadow 0.2s;
+    margin-top: auto;
+
+    box-shadow: 0 0 10px var(--accent-blue);
+}
+
+.level-button:hover {
+  background-color: #0077CC; 
+  transform: scale(1.03);
+  box-shadow: 0 0 15px var(--accent-blue);
+}
+
+/* Button Press Effect */
+.level-button:active {
+    transform: translateY(2px) scale(1);
+    box-shadow: 0 0 5px var(--accent-blue);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 800px) {
+    .menu-container {
+        width: 90vw;
+        height: 90vh; 
+        padding: 30px 15px;
+    }
+    .game-title {
+        font-size: 2em;
+    }
+}

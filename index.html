@@ -1,13 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pac-Man</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAC-MAN</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <canvas id="board"></canvas>
+
+    <div class="menu-container">
+        <h1 class="game-title">PAC-MAN</h1>
+        <p class="subtitle">Select Your Stage</p>
+
+        <div class="level-grid">
+            
+            <!-- Level 1 Card -->
+            <div class="level-card" data-level-url="level1.html">
+                <div class="level-details">
+                    <h2>STAGE 1</h2>
+                    <div class="maze-preview">
+                        BEGINNER'S BUFFET
+                    </div>
+                </div>
+                <button class="level-button" onclick="startLevel('level1.html')">START</button>
+            </div>
+
+            <!-- Level 2 Card -->
+            <div class="level-card" data-level-url="level2.html">
+                <div class="level-details">
+                    <h2>STAGE 2</h2>
+                    <div class="maze-preview">
+                        STRATEGIC CROSS
+                    </div>
+                </div>
+                <button class="level-button" onclick="startLevel('level2.html')">START</button>
+            </div>
+
+            <!-- Level 3 Card -->
+            <div class="level-card" data-level-url="level3.html">
+                <div class="level-details">
+                    <h2>STAGE 3</h2>
+                    <div class="maze-preview">
+                        INFERNO RUN
+                    </div>
+                </div>
+                <button class="level-button" onclick="startLevel('level3.html')">START</button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <script>
+      function startLevel(levelPage) {
+          console.log("Starting " + levelPage);
+          // Redirect the user to the level page
+          window.location.href = levelPage; 
+      }
+    </script>
 </body>
 </html>
