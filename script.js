@@ -49,6 +49,9 @@ const foods = new Set();
 const ghosts = new Set();
 let pacman;
 
+// up down left right
+const directions = ['U', 'D', 'L', 'R'];
+
 window.onload = function() {
   board = document.getElementById("board");
   board.height = boardHeight;
@@ -60,6 +63,12 @@ window.onload = function() {
   // console.log(walls.size);
   // console.log(foods.size);
   // console.log(ghosts.size);
+
+  for (let ghost of ghosts.values()) {
+    const newDirection = directions[Math.floor(Math.random()*4)]; // 0-3
+    ghost.updateDirection(newDirection);
+  }
+
   update();
 
   document.addEventListener("keyup", movePacman);
@@ -171,6 +180,25 @@ function move() {
       break;
     }
   }
+
+  for (let ghost of ghosts.values()) {
+
+    if (ghost.y == tileSize*9 && ghost.direction != 'U' && ghost.direction != 'D') {
+      ghost.updateDirection('U');
+    }
+
+    ghost.x += ghost.velocityX;
+    ghost.y += ghost.velocityY;
+
+    for (let wall of walls.values()) {
+      if (collision(ghost, wall) || ghost.x <= 0 || ghost.x + ghost.width >= boardWidth) {
+        ghost.x -= ghost.velocityX;
+        ghost.y -= ghost.velocityY;
+        const newDirection = directions[Math.floor(Math.random()*4)]; // 0-3
+        ghost.updateDirection(newDirection);
+      }
+    }
+  }
 }
 
 function movePacman(e) {
@@ -185,6 +213,20 @@ function movePacman(e) {
   }
   else if (e.code == "ArrowRight" || e.code == "KeyD") {
     pacman.updateDirection('R');
+  }
+
+  // update pacman images
+  if (pacman.direction == 'U') {
+    pacman.image = pacmanUp;
+  }
+  else if (pacman.direction == 'D') {
+    pacman.image = pacmanDown;
+  }
+  else if (pacman.direction == 'L') {
+    pacman.image = pacmanLeft;
+  }
+  else if (pacman.direction == 'R') {
+    pacman.image = pacmanRight;
   }
 }
 
@@ -218,7 +260,7 @@ class Block{
     this.x += this.velocityX;
     this.y += this.velocityY;
 
-    for (let wall of walls.values) {
+    for (let wall of walls.values()) {
       if (collision(this, wall)) {
         this.x -= this.velocityX;
         this.y -= this.velocityY;
