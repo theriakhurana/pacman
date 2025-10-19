@@ -33,12 +33,19 @@ let lives = 3;
 let gameOver = false;
 
 let nextDirection = null;
+let highScore = 0;
 
 window.onload = function() {
   board = document.getElementById("board");
   board.height = boardHeight;
   board.width = boardWidth;
   context = board.getContext("2d"); // used for drawing on the board
+
+  // Load High Score from localStorage
+    const savedHighScore = localStorage.getItem('pacmanHighScore');
+    if (savedHighScore !== null) {
+        highScore = parseInt(savedHighScore, 10);
+    }
 
   loadImages();
   loadMap();
@@ -54,6 +61,13 @@ window.onload = function() {
   update();
 
   document.addEventListener("keydown", movePacman);
+}
+
+function saveScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('pacmanHighScore', highScore);
+    }
 }
 
 function loadImages() {
@@ -153,12 +167,18 @@ function draw() {
   // score
   context.fillStyle = "white";
   context.font = "14px sans-serif";
+  
+  context.textAlign = "right";
+  context.fillText("Highest Score: " + String(highScore), boardWidth - tileSize/2, tileSize/2);
+
+  context.textAlign = "left";
   if (gameOver) {
-    context.fillText("Game Over: " + String(score), tileSize/2, tileSize/2);
+      context.fillText("Game Over: " + String(score), tileSize/2, tileSize/2);
   }
   else {
-    context.fillText("x" + String(lives) + " " + String(score), tileSize/2, tileSize/2);
+      context.fillText("x" + String(lives) + " " + String(score), tileSize/2, tileSize/2);
   }
+  
 }
 
 function move() {
@@ -184,6 +204,7 @@ function move() {
       lives -= 1;
       if (lives == 0) {
         gameOver = true;
+        saveScore();
         return;
       }
       resetPositions();
@@ -226,6 +247,8 @@ function move() {
 
 function movePacman(e) {
   if (gameOver){
+    saveScore();
+
     loadMap();
     resetPositions();
     lives = 3;
