@@ -3,8 +3,8 @@ let board;
 const rowCount = 21;
 const colCount = 19;
 const tileSize = 32;
-const boardWidth = rowCount * tileSize;
-const boardHeight = colCount * tileSize;
+const boardWidth = colCount * tileSize;
+const boardHeight = rowCount * tileSize;
 let context;
 
 // images
@@ -57,9 +57,10 @@ window.onload = function() {
 
   loadImages();
   loadMap();
-  console.log(walls.size);
-  console.log(foods.size);
-  console.log(ghosts.size);
+  // console.log(walls.size);
+  // console.log(foods.size);
+  // console.log(ghosts.size);
+  update();
 }
 
 function loadImages() {
@@ -127,6 +128,31 @@ function loadMap() {
         foods.add(food);
       }
     }
+  }
+}
+
+function update() {
+  // move
+  draw();
+  setTimeout(update, 50);
+  // setInterval, setTimeout, requestAnimationFrame
+  // 20 FPS 1-> 1000ms /20 = 50
+} 
+
+function draw() {
+  context.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height);
+
+  for (let ghost of ghosts.values()) {
+    context.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height);
+  }
+
+  for (let wall of walls.values()) {
+    context.drawImage(wall.image, wall.x, wall.y, wall.width, wall.height);
+  }
+
+  context.fillStyle = "white";
+  for (let food of foods.values()) {
+    context.fillRect(food.x, food.y, food.width, food.height);
   }
 }
 
