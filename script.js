@@ -34,6 +34,7 @@ let gameOver = false;
 
 let nextDirection = null;
 let highScore = 0;
+let backgroundMusic;
 
 window.onload = function() {
   board = document.getElementById("board");
@@ -46,6 +47,11 @@ window.onload = function() {
     if (savedHighScore !== null) {
         highScore = parseInt(savedHighScore, 10);
     }
+
+  backgroundMusic = document.getElementById('background-music');
+  backgroundMusic.volume = 0.6; //moderate volume
+  backgroundMusic.play().catch(e => console.log("Audio playback blocked by browser."));
+  
 
   loadImages();
   loadMap();
@@ -140,7 +146,14 @@ function loadMap() {
 
 function update() {
   if (gameOver) {
+    if (backgroundMusic) {
+      backgroundMusic.pause();
+    }
     return;
+  }
+
+  if (backgroundMusic && backgroundMusic.paused) {
+    backgroundMusic.play().catch(e => {}); // Attempt to play if paused and game is active
   }
   move();
   draw();
@@ -246,6 +259,10 @@ function move() {
 }
 
 function movePacman(e) {
+  if (backgroundMusic && backgroundMusic.paused && !gameOver) {
+    backgroundMusic.play().catch(e => console.log("Audio playback blocked."));
+  }
+
   if (gameOver){
     saveScore();
 
